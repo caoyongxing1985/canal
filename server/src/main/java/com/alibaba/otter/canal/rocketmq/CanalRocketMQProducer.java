@@ -125,7 +125,8 @@ public class CanalRocketMQProducer extends AbstractMQProducer implements CanalMQ
                 com.alibaba.otter.canal.protocol.Message[] messages = MQMessageUtils.messagePartition(datas,
                     message.getId(),
                     destination.getPartitionsNum(),
-                    destination.getPartitionHash());
+                    destination.getPartitionHash(),
+                    mqProperties.getDatabaseHash());
                 int length = messages.length;
 
                 ExecutorTemplate template = new ExecutorTemplate(executor);
@@ -168,7 +169,8 @@ public class CanalRocketMQProducer extends AbstractMQProducer implements CanalMQ
                     for (FlatMessage flatMessage : flatMessages) {
                         FlatMessage[] partitionFlatMessage = MQMessageUtils.messagePartition(flatMessage,
                             destination.getPartitionsNum(),
-                            destination.getPartitionHash());
+                            destination.getPartitionHash(),
+                            mqProperties.getDatabaseHash());
                         int length = partitionFlatMessage.length;
                         for (int i = 0; i < length; i++) {
                             partitionFlatMessages.get(i).add(partitionFlatMessage[i]);
